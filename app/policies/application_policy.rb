@@ -37,6 +37,7 @@ class ApplicationPolicy
     false
   end
 
+  # Define o escopo das políticas, quais registros podem ser acessados pelo usuário
   class Scope
     def initialize(user, scope)
       @user = user
