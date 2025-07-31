@@ -1,3 +1,4 @@
+# app/models/user.rb
 class User < ApplicationRecord
   rolify
   # Include default devise modules. Others available are:

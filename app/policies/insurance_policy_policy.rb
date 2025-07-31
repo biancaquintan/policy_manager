@@ -1,12 +1,7 @@
 # app/policies/insurance_policy_policy.rb
 class InsurancePolicyPolicy < ApplicationPolicy
-  # NOTE: Up to Pundit v2.3.1, the inheritance was declared as
-  # `Scope < Scope` rather than `Scope < ApplicationPolicy::Scope`.
-  # In most cases the behavior will be identical, but if updating existing
-  # code, beware of possible changes to the ancestors:
-  # https://gist.github.com/Burgestrand/4b4bc22f31c8a95c425fc0e30d7ef1f5
+  # Controla o acesso às apólices conforme role do usuário
   class Scope < ApplicationPolicy::Scope
-    # Restricts access to insurance policies based on user roles
     def resolve
       if user.has_role?(:admin) || user.has_role?(:operador)
         scope.all

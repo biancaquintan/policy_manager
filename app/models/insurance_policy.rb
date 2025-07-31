@@ -1,3 +1,4 @@
+# app/models/insurance_policy.rb
 class InsurancePolicy < ApplicationRecord
   belongs_to :user
 
