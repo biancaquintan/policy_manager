@@ -1,0 +1,22 @@
+require:
+  - rubocop-rails
+  - rubocop-performance
+  - rubocop-rspec
+  - rubocop-capybara
+
+inherit_from:
+  - .rubocop_todo.yml
+
+AllCops:
+  TargetRubyVersion: 3.2
+  NewCops: enable
+  Exclude:
+    - 'db/schema.rb'
+    - 'bin/**/*'
+    - 'node_modules/**/*'
+
+Layout/LineLength:
+  Max: 120
+
+Rails/HasAndBelongsToMany:
+  Enabled: false

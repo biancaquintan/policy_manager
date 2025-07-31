@@ -1,0 +1,10 @@
+en:
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+        insurance_policy:
+          attributes:
+            policy_number:
+              format: "must be exactly 12 digits"
