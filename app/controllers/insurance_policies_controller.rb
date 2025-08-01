@@ -1,26 +1,21 @@
 # app/controllers/insurance_policies_controller.rb
 class InsurancePoliciesController < ApplicationController
+  include Pundit
+
   before_action :authenticate_user!
-  before_action :set_insurance_policy, only: %i[show edit update destroy]
+  before_action :set_insurance_policy, only: %i[show update destroy]
 
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
   def index
     @insurance_policies = policy_scope(InsurancePolicy)
+    render json: @insurance_policies
   end
 
   def show
     authorize @insurance_policy
-  end
-
-  def new
-    @insurance_policy = InsurancePolicy.new
-    authorize @insurance_policy
-  end
-
-  def edit
-    authorize @insurance_policy
+    render json: @insurance_policy
   end
 
   def create
@@ -28,25 +23,26 @@ class InsurancePoliciesController < ApplicationController
     authorize @insurance_policy
 
     if @insurance_policy.save
-      redirect_to @insurance_policy, notice: t('insurance_policy.created')
+      render json: @insurance_policy, status: :created
     else
-      render :new
+      render json: @insurance_policy.errors, status: :unprocessable_entity
     end
   end
 
   def update
     authorize @insurance_policy
+
     if @insurance_policy.update(insurance_policy_params)
-      redirect_to @insurance_policy, notice: t('insurance_policy.updated')
+      render json: @insurance_policy
     else
-      render :edit
+      render json: @insurance_policy.errors, status: :unprocessable_entity
     end
   end
 
   def destroy
     authorize @insurance_policy
     @insurance_policy.destroy
-    redirect_to insurance_policies_url, notice: t('insurance_policy.destroyed')
+    head :no_content
   end
 
   private
@@ -56,6 +52,7 @@ class InsurancePoliciesController < ApplicationController
   end
 
   def insurance_policy_params
-    params.require(:insurance_policy).permit(:policy_number, :start_date, :end_date, :status)
+    params.require(:insurance_policy).permit(:policy_number, :start_date, :end_date, :total_deductible,
+                                             :total_coverage, :status)
   end
 end
