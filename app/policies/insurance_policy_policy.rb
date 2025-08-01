@@ -3,7 +3,7 @@ class InsurancePolicyPolicy < ApplicationPolicy
   # Controla o acesso às apólices conforme role do usuário
   class Scope < ApplicationPolicy::Scope
     def resolve
-      if user.has_role?(:admin) || user.has_role?(:operador)
+      if user.has_role?(:admin) || user.has_role?(:operator)
         scope.all
       else
         scope.where(user_id: user.id)
@@ -12,15 +12,15 @@ class InsurancePolicyPolicy < ApplicationPolicy
   end
 
   def index?
-    user.has_role?(:admin) || user.has_role?(:operador)
+    user.has_role?(:admin) || user.has_role?(:operator)
   end
 
   def show?
-    user.has_role?(:admin) || user.has_role?(:operador) || record.user_id == user.id
+    user.has_role?(:admin) || user.has_role?(:operator) || record.user_id == user.id
   end
 
   def create?
-    user.has_role?(:admin) || user.has_role?(:operador)
+    user.has_role?(:admin) || user.has_role?(:operator)
   end
 
   def update?
