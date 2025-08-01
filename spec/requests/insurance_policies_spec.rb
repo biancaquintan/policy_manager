@@ -3,6 +3,73 @@ require 'rails_helper'
 RSpec.describe "InsurancePolicies", type: :request do
   let(:other_policy) { create(:insurance_policy) }
 
+  describe "GET /insurance_policies" do
+    before do
+      create_list(:insurance_policy, 3)
+    end
+
+    context "when user is admin" do
+      let(:admin) { create(:user, :admin) }
+
+      before do
+        sign_in admin
+        get insurance_policies_path, as: :json
+      end
+
+      it "responds with success" do
+        expect(response).to have_http_status(:ok)
+      end
+
+      it "returns all insurance policies" do
+        json = response.parsed_body
+        expect(json.length).to eq(3)
+      end
+    end
+
+    context "when user is operator" do
+      let(:operator) { create(:user, :operator) }
+
+      before do
+        sign_in operator
+        get insurance_policies_path, as: :json
+      end
+
+      it "responds with success" do
+        expect(response).to have_http_status(:ok)
+      end
+
+      it "returns all insurance policies" do
+        json = response.parsed_body
+        expect(json.length).to eq(3)
+      end
+    end
+
+    context "when user is client" do
+      let(:client) { create(:user, :client) }
+      let(:own_policy) { create(:insurance_policy, user: client) }
+
+      before do
+        own_policy # garante criação antes da requisição
+        sign_in client
+        get insurance_policies_path, as: :json
+      end
+
+      it "responds with success" do
+        expect(response).to have_http_status(:ok)
+      end
+
+      it "returns only one insurance policy" do
+        json = response.parsed_body
+        expect(json.length).to eq(1)
+      end
+
+      it "returns insurance policy belonging to the client" do
+        json = response.parsed_body
+        expect(json.first["user_id"]).to eq(client.id)
+      end
+    end
+  end
+
   describe "GET /insurance_policies/:id" do
     context "when user is admin" do
       let(:admin) { create(:user, :admin) }
