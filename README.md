@@ -37,12 +37,16 @@ Sistema simples para gerenciamento de apólices de seguro, desenvolvido em Ruby 
    TEST_DATABASE_URL=
    PROD_DATABASE_URL=
 
-3. Popule o banco de dados:
+3. Instale as dependências:
+   ```bash
+   bundle install
+   
+4. Popule o banco de dados:
 
    ```bash
    rails db:create db:migrate db:seed
 
-4. Rode os testes:
+5. Rode os testes:
 
    ```bash
    bundle exec rspec
