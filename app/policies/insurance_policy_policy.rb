@@ -16,7 +16,7 @@ class InsurancePolicyPolicy < ApplicationPolicy
   end
 
   def show?
-    user.has_role?(:admin) || user.has_role?(:operator) || record.user_id == user.id
+    user.has_role?(:admin) || user.has_role?(:operator) || owns_record?
   end
 
   def create?
@@ -29,5 +29,11 @@ class InsurancePolicyPolicy < ApplicationPolicy
 
   def destroy?
     user.has_role?(:admin)
+  end
+
+  private
+
+  def owns_record?
+    record.user_id == user.id
   end
 end
