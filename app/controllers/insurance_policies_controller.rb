@@ -17,9 +17,7 @@ class InsurancePoliciesController < ApplicationController
     @insurance_policy = InsurancePolicy.new(insurance_policy_params)
     authorize @insurance_policy
 
-    unless policy(@insurance_policy).assign_user_id?
-      @insurance_policy.user = current_user
-    end
+    @insurance_policy.user = current_user unless policy(@insurance_policy).assign_user_id?
 
     if @insurance_policy.save
       render json: @insurance_policy, status: :created
