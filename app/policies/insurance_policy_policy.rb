@@ -23,6 +23,10 @@ class InsurancePolicyPolicy < ApplicationPolicy
     user.has_role?(:admin) || user.has_role?(:operator)
   end
 
+  def assign_user_id?
+    create?
+  end
+
   def update?
     user.has_role?(:admin)
   end
