@@ -1,5 +1,5 @@
 # app/controllers/application_controller.rb
-class ApplicationController < ActionController::Base
+class ApplicationController < ActionController::API
   include Pundit::Authorization
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
