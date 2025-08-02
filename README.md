@@ -46,7 +46,115 @@ Sistema simples para gerenciamento de apólices de seguro, desenvolvido em Ruby 
    ```bash
    rails db:create db:migrate db:seed
 
-5. Rode os testes:
+5. Rode os testes automatizados:
 
    ```bash
    bundle exec rspec
+
+## Testes via Postman
+
+### 1. Autenticar e obter token JWT
+
+```http
+POST http://localhost:3000/users/sign_in
+```
+
+**Headers:**
+
+```http
+Content-Type: application/json
+```
+
+**Body (JSON):**
+
+```json
+{
+  "user": {
+    "email": "admin@email.com",
+    "password": "senha123"
+  }
+}
+```
+
+**Response:**
+
+```json
+{
+  "message": "Login successful",
+  "user": {
+    "id": 1,
+    "email": "admin@email.com"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+⚠️ Copie o valor do campo `"token"` para usar nas demais requests.
+
+
+### 2. Testar endpoints da API de Apólices
+
+**Headers obrigatórios:**
+
+```http
+Content-Type: application/json
+Authorization: Bearer SEU_TOKEN_AQUI
+```
+
+#### Listar apólices
+
+```http
+GET http://localhost:3000/insurance_policies
+```
+
+#### Ver detalhes de uma apólice
+
+```http
+GET http://localhost:3000/insurance_policies/:id
+```
+
+#### Criar apólice
+
+```http
+POST http://localhost:3000/insurance_policies
+```
+
+**Body (JSON):**
+
+```json
+{
+  "insurance_policy": {
+    "policy_number": "121212121212",
+    "start_date": "2025-08-01",
+    "end_date": "2025-12-31",
+    "total_deductible": 5000.0,
+    "total_coverage": 100000.0,
+    "status": "active"
+    "user_id": 1
+  }
+}
+```
+
+#### Atualizar apólice
+
+```http
+PATCH http://localhost:3000/insurance_policies/1
+```
+
+**Body (JSON):**
+
+```json
+{
+  "insurance_policy": {
+    "status": "canceled"
+  }
+}
+```
+
+#### Excluir apólice
+
+```http
+DELETE http://localhost:3000/insurance_policies/1
+```
+
+
