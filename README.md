@@ -94,26 +94,26 @@ Content-Type: application/json
 
 ### 2. Testar endpoints da API de Apólices
 
-**Headers obrigatórios:**
+#### Headers obrigatórios:
 
 ```http
 Content-Type: application/json
 Authorization: Bearer SEU_TOKEN_AQUI
 ```
 
-#### Listar apólices
+#### 🔵  Listar Apólices
 
 ```http
 GET http://localhost:3000/insurance_policies
 ```
 
-#### Ver detalhes de uma apólice
+#### 🔵  Visualizar uma Apólice
 
 ```http
 GET http://localhost:3000/insurance_policies/:id
 ```
 
-#### Criar apólice
+#### 🔵  Criar Apólice
 
 ```http
 POST http://localhost:3000/insurance_policies
@@ -135,7 +135,7 @@ POST http://localhost:3000/insurance_policies
 }
 ```
 
-#### Atualizar apólice
+#### 🔵  Atualizar Apólice
 
 ```http
 PATCH http://localhost:3000/insurance_policies/1
@@ -151,7 +151,7 @@ PATCH http://localhost:3000/insurance_policies/1
 }
 ```
 
-#### Excluir apólice
+#### 🔵  Excluir Apólice
 
 ```http
 DELETE http://localhost:3000/insurance_policies/1
