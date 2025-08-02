@@ -14,8 +14,12 @@ class InsurancePoliciesController < ApplicationController
   end
 
   def create
-    @insurance_policy = current_user.insurance_policies.build(insurance_policy_params)
+    @insurance_policy = InsurancePolicy.new(insurance_policy_params)
     authorize @insurance_policy
+
+    unless policy(@insurance_policy).assign_user_id?
+      @insurance_policy.user = current_user
+    end
 
     if @insurance_policy.save
       render json: @insurance_policy, status: :created
@@ -47,13 +51,15 @@ class InsurancePoliciesController < ApplicationController
   end
 
   def insurance_policy_params
-    params.require(:insurance_policy).permit(
+    permitted = [
       :policy_number,
       :start_date,
       :end_date,
       :total_deductible,
       :total_coverage,
       :status
-    )
+    ]
+    permitted << :user_id if InsurancePolicyPolicy.new(current_user, nil).assign_user_id?
+    params.require(:insurance_policy).permit(permitted)
   end
 end
