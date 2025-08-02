@@ -1,12 +1,7 @@
 # app/controllers/insurance_policies_controller.rb
 class InsurancePoliciesController < ApplicationController
-  include Pundit
-
   before_action :authenticate_user!
   before_action :set_insurance_policy, only: %i[show update destroy]
-
-  after_action :verify_authorized, except: :index
-  after_action :verify_policy_scoped, only: :index
 
   def index
     @insurance_policies = policy_scope(InsurancePolicy)
@@ -52,7 +47,13 @@ class InsurancePoliciesController < ApplicationController
   end
 
   def insurance_policy_params
-    params.require(:insurance_policy).permit(:policy_number, :start_date, :end_date, :total_deductible,
-                                             :total_coverage, :status)
+    params.require(:insurance_policy).permit(
+      :policy_number,
+      :start_date,
+      :end_date,
+      :total_deductible,
+      :total_coverage,
+      :status
+    )
   end
 end
